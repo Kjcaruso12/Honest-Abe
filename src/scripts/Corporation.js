@@ -1,7 +1,7 @@
 import { getCorporations } from "./dataAccess.js";
 
 export const CorporationInfo = (corp) => {
-    let html = `
+    let html = `<article class="corporations">
     <section class="corporation">
         <header class="corporation__name">
             <h1>${corp.company}</h1>
@@ -10,6 +10,7 @@ export const CorporationInfo = (corp) => {
             <div>Address: ${corp.address}</div>
         </div>
     </section>
+    </article>
     `
 
     return html
@@ -17,11 +18,8 @@ export const CorporationInfo = (corp) => {
 
 export const Corporations = () => {
     const corps = getCorporations()
-    
-    let html = `<article class="corporations">
-        ${corps.map(CorporationInfo).join("")}
-        </article>
-        `
+
+    let html = `${corps.map(CorporationInfo).join("")}`
 
     return html
 }

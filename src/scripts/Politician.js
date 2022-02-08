@@ -1,7 +1,7 @@
 import { getPoliticians } from "./dataAccess.js"
 
 export const PoliticianInfo = (politician) => {
-    let html = `
+    let html = `<article class="politicians">
     <section class="politician">
         <header class="politician__name">
             <h1>${politician.name.first} ${politician.name.last}</h1>
@@ -11,18 +11,15 @@ export const PoliticianInfo = (politician) => {
             <div>Represents: ${politician.district}</div>
         </div>
     </section>
-    `
+</article>`
 
     return html
 }
 
 export const Politicians = () => {
     const politicians = getPoliticians()
-    
-    let html = `<article class="politicians">
-        ${politicians.map(PoliticianInfo).join("")}
-        </article>
-        `
+
+    let html = `${politicians.map(PoliticianInfo).join("")}`
 
     return html
 }
