@@ -1,12 +1,14 @@
-import { fetchPoliticians } from "./dataAccess.js"
+import { fetchCorporateDonations, fetchCorporations, fetchPACS, fetchPoliticians } from "./dataAccess.js"
+import { Politics } from "./HonestAbe.js"
 import { Politicians } from "./Politician.js"
 
 const mainContainer = document.querySelector("#container")
 
 const render = () => {
-    fetchPoliticians().then(
+    Promise.all([fetchPoliticians(), fetchCorporations(), fetchPACS(), fetchCorporateDonations()])
+    .then(
         () => {
-            mainContainer.innerHTML = Politicians()
+            mainContainer.innerHTML = Politics()
         }
     )
 }
