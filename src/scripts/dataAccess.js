@@ -2,6 +2,8 @@ const state = {
     politicians: [],
     corporations: [],
     PACS: [],
+    legislations:[],
+    politicianlegislations:[],
     PACDonations:[],
     corporateDonations:[]
 
@@ -59,6 +61,26 @@ export const fetchPACS = () => {
         )
 }
 
+export const fetchBills = () => {
+    return fetch(`${API}/legislations`)
+        .then(response => response.json())
+        .then(
+            (bill) => {
+                state.legislations = bill
+            }
+        )
+}
+
+export const fetchPoliticianBills = () => {
+    return fetch(`${API}/politicianlegislations`)
+        .then(response => response.json())
+        .then(
+            (bill) => {
+                state.politicianlegislations = bill
+            }
+        )
+}
+
 export const getPoliticians = () => {
     return state.politicians.map(politician => ({...politician}))
 }
@@ -79,3 +101,10 @@ export const getPACS = () => {
     return state.PACS.map(pac => ({...pac}))
 }
 
+export const getBills = () => {
+    return state.legislations.map(bill => ({...bill}))
+}
+
+export const getPoliticianBills = () => {
+    return state.politicianlegislations.map(bill => ({...bill}))
+}

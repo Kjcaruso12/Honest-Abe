@@ -40,7 +40,7 @@ export const CorpDonations = () => {
     const pacs = getPACS()
     const companies = getCorporations()
     let html = ""
-    
+
     //iterate through PACS
     const pacReceivingDonation = pacs.map(pac => {
         html += PACDonos(pac)
@@ -48,10 +48,9 @@ export const CorpDonations = () => {
         const corpDonationArr = donations.filter(donation => {
             return donation.pacId === pac.id
         })
-
         //filter donations to find those with matching corporationIds from companies 
         const companiesArr = corpDonationArr.map(donation => {
-            
+
             const companyName = companies.find(name => name.id === donation.corporationId)
             html += `<li>
             ${companyName.company} ($${donation.amount})
@@ -59,7 +58,7 @@ export const CorpDonations = () => {
             `
         })
         html += companiesArr.join("")
-        
+
         html += `</ul>
             </div>
         </section>
@@ -73,31 +72,32 @@ export const PACDonations = () => {
     const pacs = getPACS()
     const donations = getPACDonations()
     let html = ""
-    
+
     //iterate through PACS
     const politicianReceivingDonation = politicians.map(politician => {
-        html += PoliticianDonos(politician)
         //filter donations to get donations to the current politician
         const PACDonationArr = donations.filter(donation => {
             return donation.politicianId === politician.id
         })
+            html += PoliticianDonos(politician)
+            //filter donations to find those with matching corporationIds from companies 
+            const PACsArr = PACDonationArr.map(donation => {
 
-        //filter donations to find those with matching corporationIds from companies 
-        const PACsArr = PACDonationArr.map(donation => {
-            
-            const PACName = pacs.find(name => name.id === donation.pacId)
-            html += `<li>
+                const PACName = pacs.find(name => name.id === donation.pacId)
+                html += `<li>
             ${PACName.registeredName} ($${donation.amount})
             </li>
             `
-        })
-        html += PACsArr.join("")
-        
-        html += `</ul>
+            })
+            html += PACsArr.join("")
+
+            html += `</ul>
             </div>
         </section>
     </article>`
     })
     return html
 }
+
+
 
