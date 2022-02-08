@@ -1,5 +1,5 @@
 import { Corporations } from "./Corporation.js"
-import { CorpDonations } from "./Donations.js"
+import { CorpDonations, PACDonations } from "./Donations.js"
 import { Politicians } from "./Politician.js"
 
 export const Politics = () => {
@@ -8,5 +8,6 @@ export const Politics = () => {
     ${Politicians()}
     ${Corporations()}
     ${CorpDonations()}
+    ${PACDonations()}
     `
 }

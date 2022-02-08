@@ -1,7 +1,7 @@
-import { getCorpDonations, getCorporations, getPACS } from "./dataAccess.js";
+import { getCorpDonations, getCorporations, getPACDonations, getPACS, getPoliticians } from "./dataAccess.js";
 
-export const PACS = (pac) => {
-    let html = `
+export const PACDonos = (pac) => {
+    let html = `<article class="pacs">
     <section class="pac">
         <header class="pac__name">
             <h1>${pac.registeredName}</h1>
@@ -17,6 +17,24 @@ export const PACS = (pac) => {
     return html
 }
 
+export const PoliticianDonos = (politician) => {
+    let html = `<article class="politicians">
+    <section class="politician">
+        <header class="politician__name">
+            <h1>${politician.name.first} ${politician.name.last}</h1>
+        </header>
+        <div class="politician_info">
+            <div>Age: ${politician.age}</div>
+            <div>Represents: ${politician.district}</div>
+        </div>
+        <div class=pac_donations">
+            <h2>PAC Donations</h2>
+            </ul>
+    `
+
+    return html
+}
+
 export const CorpDonations = () => {
     const donations = getCorpDonations()
     const pacs = getPACS()
@@ -25,17 +43,16 @@ export const CorpDonations = () => {
     
     //iterate through PACS
     const pacReceivingDonation = pacs.map(pac => {
-        html += `<article class="pacs">`
-        html += PACS(pac)
-        //filter donations to get donations to the certain pac
+        html += PACDonos(pac)
+        //filter donations to get donations to the current pac
         const corpDonationArr = donations.filter(donation => {
             return donation.pacId === pac.id
         })
 
+        //filter donations to find those with matching corporationIds from companies 
         const companiesArr = corpDonationArr.map(donation => {
             
             const companyName = companies.find(name => name.id === donation.corporationId)
-            //filter donations to find those with matching corporationIds from companies 
             html += `<li>
             ${companyName.company} ($${donation.amount})
             </li>
@@ -48,7 +65,39 @@ export const CorpDonations = () => {
         </section>
     </article>`
     })
+    return html
+}
+
+export const PACDonations = () => {
+    const politicians = getPoliticians()
+    const pacs = getPACS()
+    const donations = getPACDonations()
+    let html = ""
     
+    //iterate through PACS
+    const politicianReceivingDonation = politicians.map(politician => {
+        html += PoliticianDonos(politician)
+        //filter donations to get donations to the current politician
+        const PACDonationArr = donations.filter(donation => {
+            return donation.politicianId === politician.id
+        })
+
+        //filter donations to find those with matching corporationIds from companies 
+        const PACsArr = PACDonationArr.map(donation => {
+            
+            const PACName = pacs.find(name => name.id === donation.pacId)
+            html += `<li>
+            ${PACName.registeredName} ($${donation.amount})
+            </li>
+            `
+        })
+        html += PACsArr.join("")
+        
+        html += `</ul>
+            </div>
+        </section>
+    </article>`
+    })
     return html
 }
 

@@ -2,7 +2,7 @@ const state = {
     politicians: [],
     corporations: [],
     PACS: [],
-    PACdonations:[],
+    PACDonations:[],
     corporateDonations:[]
 
 }
@@ -39,6 +39,16 @@ export const fetchCorporateDonations = () => {
         )
 }
 
+export const fetchPACDonations = () => {
+    return fetch(`${API}/pacdonations`)
+        .then(response => response.json())
+        .then(
+            (donation) => {
+                state.PACDonations = donation
+            }
+        )
+}
+
 export const fetchPACS = () => {
     return fetch(`${API}/pacs`)
         .then(response => response.json())
@@ -59,6 +69,10 @@ export const getCorporations = () => {
 
 export const getCorpDonations = () => {
     return state.corporateDonations.map(donation => ({...donation}))
+}
+
+export const getPACDonations = () => {
+    return state.PACDonations.map(donation => ({...donation}))
 }
 
 export const getPACS = () => {
