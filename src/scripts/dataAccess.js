@@ -1,12 +1,13 @@
 const state = {
     politicians: [],
     corporations: [],
+    interests:[],
     PACS: [],
     legislations:[],
     politicianlegislations:[],
     PACDonations:[],
-    corporateDonations:[]
-
+    corporateDonations:[],
+    corporateInterests:[]
 }
 
 const API = "http://localhost:8088"
@@ -81,6 +82,26 @@ export const fetchPoliticianBills = () => {
         )
 }
 
+export const fetchInterests = () => {
+    return fetch(`${API}/interests`)
+        .then(response => response.json())
+        .then(
+            (interest) => {
+                state.interests = interest
+            }
+        )
+}
+
+export const fetchCorporateInterests = () => {
+    return fetch(`${API}/corporateinterests`)
+        .then(response => response.json())
+        .then(
+            (interest) => {
+                state.corporateInterests = interest
+            }
+        )
+}
+
 export const getPoliticians = () => {
     return state.politicians.map(politician => ({...politician}))
 }
@@ -107,4 +128,12 @@ export const getBills = () => {
 
 export const getPoliticianBills = () => {
     return state.politicianlegislations.map(bill => ({...bill}))
+}
+
+export const getInterests = () => {
+    return state.interests.map(interest => ({...interest}))
+}
+
+export const getCorporateInterests = () => {
+    return state.corporateInterests.map(interest => ({...interest}))
 }
