@@ -26,11 +26,7 @@ export const PoliticianDonos = (politician) => {
         <div class="politician_info">
             <div>Age: ${politician.age}</div>
             <div>Represents: ${politician.district}</div>
-        </div>
-        <div class=pac_donations">
-            <h2>PAC Donations</h2>
-            </ul>
-    `
+        </div>`
 
     return html
 }
@@ -79,18 +75,22 @@ export const PACDonations = () => {
         const PACDonationArr = donations.filter(donation => {
             return donation.politicianId === politician.id
         })
-            html += PoliticianDonos(politician)
-            //filter donations to find those with matching corporationIds from companies 
-            const PACsArr = PACDonationArr.map(donation => {
-
-                const PACName = pacs.find(name => name.id === donation.pacId)
-                html += `<li>
+        html += PoliticianDonos(politician)
+        //filter donations to find those with matching corporationIds from companies 
+        if (PACDonationArr.length) {
+            html += `<div class=pac_donations">
+            <h2>PAC Donations</h2>
+            </ul>`
+        }
+        const PACsArr = PACDonationArr.map(donation => {
+            
+            const PACName = pacs.find(name => name.id === donation.pacId)
+            html += `<li>
             ${PACName.registeredName} ($${donation.amount})
             </li>
             `
-            })
+        })
             html += PACsArr.join("")
-
             html += `</ul>
             </div>
         </section>

@@ -26,9 +26,7 @@ export const FullPoliticianInfo = (politician) => {
                 <div>Age: ${politician.age}</div>
                 <div>Represents: ${politician.district}</div>
             </div>
-            <div class="politician_bills">
-                <h2>Sponsored Bills</h2>
-                `
+            `
 
     return html
 }
@@ -53,6 +51,11 @@ export const PoliticianFunding = () => {
         const politicianlegislations = politicianBills.filter(bill => {
             return bill.politicianId === politician.id
         })
+        if (politicianlegislations.length) {
+            html += `<div class="politician_bills">
+            <h2>Sponsored Bills</h2>
+            `
+        }
         //iterate through policianlegislation array to find the matching legislation information
         const sponsoredBills = politicianlegislations.map(sponsoredBill => {
             const billInfo = bills.find(bill => bill.id === sponsoredBill.legislationId)
@@ -67,10 +70,11 @@ export const PoliticianFunding = () => {
         const PACsDonationArr = PACdonations.filter(donation => {
             return politician.id === donation.politicianId
         })
-
-        html += `<div class="politician_funders">
+        if (PACsDonationArr.length) {
+            html += `<div class="politician_funders">
                 <h2>Related PACs</h2>
-                <ul>`
+                    <ul>`
+        }
         const PACNames = PACsDonationArr.map(pacDonation => {
             const matchingPAC = pacs.find(pac => pac.id === pacDonation.pacId)
             return `<li>
@@ -84,11 +88,11 @@ export const PoliticianFunding = () => {
             </div>
             <div class="politician__influencers">
                 <h3>Influencing Corporations</h3>
-                <ul>`
+                    <ul>`
 
         //interate through politicianlegislations(array of legislation that the politician has sponsored) to find corporations that share the same interest.
 
-        const matchingCompainesArr = politicianlegislations.map(sponsoredBill => {
+        const matchingCompaniesArr = politicianlegislations.map(sponsoredBill => {
             //find the legislation.id that matches sponsoredBill.legislationId
             const billInfo = bills.find(bill => bill.id === sponsoredBill.legislationId)
             //Find which commercialInterest that bill serves
@@ -104,19 +108,23 @@ export const PoliticianFunding = () => {
                     const corporation = CorpDonationArr.map(matchingCorp => {
                         const matchingCompany = companies.find(matchCompany => matchCompany.id === matchingCorp.corporationId)
                         if (matchingCompany.id === corpInterest.corporationId) {
-                            InfluencingCorporations.push( `<li>
+                            InfluencingCorporations.push(`<li>
                                 ${matchingCompany.company}
                                     </li>`
-                            )}
+                            )
+                        }
                     })
                 })
             })
             const newInfluencingCorps = [...new Set(InfluencingCorporations)]
             html += newInfluencingCorps.join("")
         })
-        html += `</div>
-                    </section>
-                </article>`
+        html += `
+                </ul>
+            </div>
+        </section>
+    </article>
+`
     })
     return html
 }
